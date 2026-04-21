@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 ### Querying Stock Prices
 
-Use the script to get the latest price, change, and day range for one or more symbols.
+Use the script to get latest data in JSON format for one or more symbols.
 
 ```bash
 python3 stock_checker.py AAPL MSFT TSLA
@@ -28,7 +28,7 @@ python3 stock_checker.py AAPL MSFT TSLA
 
 ### Getting Market News and Summaries
 
-Use the `--news` flag to get headlines. If the user asks for more detail or a summary of a specific article, use the `web_fetch` tool on the provided URL.
+Use the `--news` flag to get headlines in JSON format.
 
 ```bash
 python3 stock_checker.py --news
@@ -36,17 +36,9 @@ python3 stock_checker.py --news
 
 **Workflow for Summarization:**
 1. Run the script with `--news`.
-2. Identify the URL of interest.
+2. Parse the JSON to identify the URL of interest.
 3. Call `web_fetch` with the URL and a prompt like "Summarize this market news article in simple words."
 4. Present the summary to the user.
-
-### JSON Output for LLM Consumption
-
-When you need to process the data programmatically (e.g., to answer a complex question or perform analysis), use the `--json` flag.
-
-```bash
-python3 stock_checker.py AAPL MSFT --json
-```
 
 ## Asset Locations
 

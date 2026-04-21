@@ -4,10 +4,9 @@ A simple Python CLI tool to query the latest stock prices using `yfinance` and `
 
 ## Features
 - Query multiple stock symbols at once.
-- Displays price, change, percentage change, day high, and day low.
-- Color-coded output for gains and losses.
-- **Top Market News:** Get the latest headlines from the financial markets.
-- **JSON Output:** Structured data for programmatic use (e.g., by LLMs).
+- Returns structured JSON data containing price, change, percentage change, day high, and day low.
+- **Top Market News:** Get the latest headlines from the financial markets in JSON.
+- **LLM Optimized:** Default JSON output makes it easy for AI agents to consume and process data.
 
 ## Setup
 
@@ -24,22 +23,16 @@ A simple Python CLI tool to query the latest stock prices using `yfinance` and `
 
 ## Usage
 
-Run the script with one or more stock symbols:
+Run the script with one or more stock symbols to get JSON data:
 
 ```bash
 python stock_checker.py AAPL MSFT TSLA
 ```
 
-Get top market news:
+Get top market news in JSON:
 
 ```bash
 python stock_checker.py --news
-```
-
-Output JSON for LLM consumption:
-
-```bash
-python stock_checker.py AAPL MSFT --json
 ```
 
 ## Recommended Libraries for Stock Data

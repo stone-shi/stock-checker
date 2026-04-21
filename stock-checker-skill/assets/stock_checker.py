@@ -1,7 +1,4 @@
 import yfinance as yf
-from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
 import argparse
 import sys
 import json
@@ -69,62 +66,9 @@ def fetch_market_news(count=5):
     except Exception as e:
         return [{"error": str(e)}]
 
-def print_table(results, news=None):
-    console = Console()
-    
-    if results:
-        table = Table(title="Latest Stock Prices")
-        table.add_column("Symbol", style="cyan", no_wrap=True)
-        table.add_column("Price", style="green")
-        table.add_column("Currency", style="magenta")
-        table.add_column("Change", style="bold")
-        table.add_column("Change %", style="bold")
-        table.add_column("Day High", style="yellow")
-        table.add_column("Day Low", style="yellow")
-
-        for res in results:
-            if res["status"] == "success" and res["price"] is not None:
-                color = "green" if (res["change"] or 0) >= 0 else "red"
-                change_val = res['change'] if res['change'] is not None else 0.0
-                change_pct_val = res['change_percent'] if res['change_percent'] is not None else 0.0
-                
-                change_str = f"[{color}]{change_val:+.2f}[/]"
-                change_pct_str = f"[{color}]{change_pct_val:+.2f}%[/]"
-                
-                table.add_row(
-                    res["symbol"],
-                    f"{res['price']:.2f}",
-                    res["currency"],
-                    change_str,
-                    change_pct_str,
-                    f"{res['day_high']:.2f}" if res['day_high'] else "N/A",
-                    f"{res['day_low']:.2f}" if res['day_low'] else "N/A"
-                )
-            elif res["status"] == "error":
-                table.add_row(res["symbol"], "ERROR", "-", "-", "-", "-", "-")
-            else:
-                table.add_row(res["symbol"], "N/A", "N/A", "N/A", "N/A", "N/A", "N/A")
-
-        console.print(table)
-
-    if news:
-        console.print("\n[bold]Top Market News[/bold]")
-        for item in news:
-            if "error" in item:
-                console.print(f"[red]Error fetching news: {item['error']}[/]")
-                continue
-            
-            title = item.get('title', 'No Title')
-            publisher = item.get('publisher', 'Unknown')
-            link = item.get('link', '')
-            
-            content = f"[bold]{title}[/bold]\n[dim]Source: {publisher}[/dim]\n[blue]{link}[/blue]"
-            console.print(Panel(content, expand=False))
-
 def main():
-    parser = argparse.ArgumentParser(description="Query latest stock prices and market news.")
+    parser = argparse.ArgumentParser(description="Query latest stock prices and market news in JSON format.")
     parser.add_argument("symbols", nargs="*", help="One or more stock symbols (e.g., AAPL MSFT TSLA)")
-    parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     parser.add_argument("--news", action="store_true", help="Show top market news")
     
     args = parser.parse_args()
@@ -141,10 +85,7 @@ def main():
     if args.news:
         output_data["news"] = fetch_market_news()
     
-    if args.json:
-        print(json.dumps(output_data, indent=2))
-    else:
-        print_table(output_data.get("stocks", []), output_data.get("news"))
+    print(json.dumps(output_data, indent=2))
 
 if __name__ == "__main__":
     main()
