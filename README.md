@@ -1,12 +1,12 @@
-# Stock Price Checker CLI
+# Stock Price Checker - OpenClaw Skill
 
-A simple Python CLI tool to query the latest stock prices using `yfinance` and `rich`.
+A Python-based OpenClaw skill to query the latest stock prices and market news using `yfinance`.
 
 ## Features
-- Query multiple stock symbols at once.
-- Returns structured JSON data containing price, change, percentage change, day high, and day low.
-- **Top Market News:** Get the latest headlines from the financial markets in JSON.
-- **LLM Optimized:** Default JSON output makes it easy for AI agents to consume and process data.
+- Optimized for **OpenClaw** agents.
+- Returns structured JSON data for easy agent consumption.
+- Supports multiple stock symbols and market news.
+- Seamlessly integrates with OpenClaw's `exec` and `web_fetch` capabilities.
 
 ## Setup
 
