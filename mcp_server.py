@@ -3,6 +3,8 @@
 import os
 
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse
 from stock_checker import fetch_stock_data, fetch_market_news
 
 mcp = FastMCP(
@@ -21,6 +23,17 @@ def get_stock_prices(symbols: list[str]) -> dict:
     """
     results = fetch_stock_data(symbols)
     return {"stocks": results}
+
+
+@mcp.custom_route("/version", methods=["GET"])
+async def get_version(request: Request) -> PlainTextResponse:
+    """Return the contents of version.txt (generated at build time)."""
+    try:
+        with open("version.txt") as f:
+            content = f.read().strip()
+    except FileNotFoundError:
+        content = "unknown"
+    return PlainTextResponse(content)
 
 
 @mcp.tool()
