@@ -8,6 +8,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY stock_checker.py .
 COPY mcp_server.py .
 
+ARG GIT_REV=unknown
+RUN echo "${GIT_REV} Build: $(date -u +'%Y-%m-%d %H:%M:%S %Z')" > version.txt
+
 EXPOSE 8000
 
 ENV MCP_HOST=0.0.0.0
