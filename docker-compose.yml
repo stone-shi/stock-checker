@@ -1,0 +1,10 @@
+services:
+  stock-checker:
+    build: .
+    container_name: stock-check-mcp
+    ports:
+      - "${MCP_PORT:-8000}:8000"
+    environment:
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8000
+    restart: unless-stopped
