@@ -14,20 +14,32 @@ metadata:
 
 This skill allows the agent to fetch real-time stock quotes and market news headlines using a local Python script powered by `yfinance`.
 
+## Setup and Environment
+
+This skill relies on a virtual environment (`venv`) to manage its dependencies. If the environment is not set up yet, run the following commands in the skill directory:
+```bash
+# Create the virtual environment if it does not exist
+python3 -m venv venv
+
+# Activate and install dependencies
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 ## Instructions
 
-1.  **Environment Check**: Ensure a Python environment with `yfinance` and `pandas` is available.
+1.  **Environment Check**: Ensure the Python virtual environment is set up and dependencies in `requirements.txt` are installed.
 2.  **Inquiry Phase**: When a user asks for stock data or news, use the `exec` tool to run the `stock_checker.py` script.
 3.  **Command Execution**:
-    -   To get stock prices: `python3 stock_checker.py <SYMBOL1> <SYMBOL2> ...`
-    -   To get market news: `python3 stock_checker.py --news`
+    -   To get stock prices: `./venv/bin/python stock_checker.py <SYMBOL1> <SYMBOL2> ...`
+    -   To get market news: `./venv/bin/python stock_checker.py --news`
 4.  **Data Processing**: The script outputs structured JSON. Parse this JSON to provide a concise and clear summary to the user.
 5.  **Summarization**: If news headlines are returned, offer to summarize specific articles using the `web_fetch` or `browser` tool on the provided URLs.
 
 ## Examples
 
 ### User: "What is the price of AAPL?"
-**Agent Action**: `exec("python3 stock_checker.py AAPL")`
+**Agent Action**: `exec("./venv/bin/python stock_checker.py AAPL")`
 **Output**: 
 ```json
 {
@@ -47,7 +59,7 @@ This skill allows the agent to fetch real-time stock quotes and market news head
 ```
 
 ### User: "Show me market news"
-**Agent Action**: `exec("python3 stock_checker.py --news")`
+**Agent Action**: `exec("./venv/bin/python stock_checker.py --news")`
 **Output**: JSON containing a list of news items with `title`, `publisher`, and `link`.
 
 ## Constraints
