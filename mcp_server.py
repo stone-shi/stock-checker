@@ -11,6 +11,7 @@ mcp = FastMCP(
     "Stock Checker",
     host=os.getenv("MCP_HOST", "0.0.0.0"),
     port=int(os.getenv("MCP_PORT", "8000")),
+    streamable_http_path="/mcp",
 )
 
 
@@ -48,7 +49,8 @@ def get_market_news(count: int = 5) -> dict:
 
 
 def main():
-    mcp.run(transport="sse")
+    transport = os.getenv("MCP_TRANSPORT", "streamable-http")
+    mcp.run(transport=transport)
 
 
 if __name__ == "__main__":

@@ -35,6 +35,20 @@ Get top market news in JSON:
 python stock_checker.py --news
 ```
 
+## Running MCP Server (Streamable HTTP / SSE)
+
+Start the MCP server (defaults to Streamable HTTP on `/mcp` at `http://0.0.0.0:8000/mcp`):
+
+```bash
+python mcp_server.py
+```
+
+To switch transport back to `sse` if needed:
+
+```bash
+MCP_TRANSPORT=sse python mcp_server.py
+```
+
 ## Recommended Libraries for Stock Data
 
 - **yfinance** (Used here): Best for hobbyists. Free, no API key required, easy to use.
