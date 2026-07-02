@@ -49,8 +49,38 @@ def get_market_news(count: int = 5) -> dict:
 
 
 def main():
-    transport = os.getenv("MCP_TRANSPORT", "streamable-http")
-    mcp.run(transport=transport)
+    transport = os.getenv("MCP_TRANSPORT", "all")
+    if transport == "all":
+        import uvicorn
+        from starlette.applications import Starlette
+
+        sse_app = mcp.sse_app()
+        streamable_app = mcp.streamable_http_app()
+
+        # Combine routes from both SSE app (/sse, /messages) and Streamable HTTP app (/mcp, custom routes)
+        # Deduplicate routes if custom routes appear in both
+        seen_paths = set()
+        combined_routes = []
+        for r in sse_app.routes + streamable_app.routes:
+            path = getattr(r, "path", getattr(r, "path_format", str(r)))
+            if path not in seen_paths:
+                seen_paths.add(path)
+                combined_routes.append(r)
+
+        combined_app = Starlette(
+            debug=mcp.settings.debug,
+            routes=combined_routes,
+            lifespan=lambda app: mcp.session_manager.run(),
+        )
+
+        uvicorn.run(
+            combined_app,
+            host=mcp.settings.host,
+            port=mcp.settings.port,
+            log_level=mcp.settings.log_level.lower(),
+        )
+    else:
+        mcp.run(transport=transport)
 
 
 if __name__ == "__main__":
